@@ -41,8 +41,22 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'courses.apps.CoursesConfig',
     'ckeditor',
-    'ckeditor_uploader'
+    'ckeditor_uploader',
+    'rest_framework',
+    'drf_yasg',
 ]
+
+import cloudinary
+import cloudinary.uploader
+from cloudinary.utils import cloudinary_url
+
+# Configuration
+cloudinary.config(
+    cloud_name = "dyuhodi7a",
+    api_key = "978999139367929",
+    api_secret = "fTz0B2j9mGC2dlj3aAzHCo3sO08", # Click 'View API Keys' above to copy your API secret
+    secure=True
+)
 
 CKEDITOR_UPLOAD_PATH = "images/lessons/"
 
@@ -84,7 +98,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'coursedb',
         'USER': 'root',
-        'PASSWORD': 'hieu',
+        'PASSWORD': 'root',
         'HOST': ''  # mặc định localhost
     }
 }
@@ -92,6 +106,7 @@ DATABASES = {
 AUTH_USER_MODEL = 'courses.User'
 
 import pymysql
+
 pymysql.install_as_MySQLdb()
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators

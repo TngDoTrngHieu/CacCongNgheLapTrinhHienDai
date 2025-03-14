@@ -2,13 +2,13 @@ from django.db import models
 
 from django.contrib.auth.models import AbstractUser
 
-
 from ckeditor.fields import RichTextField
 from django.db.models import Model
 
+from cloudinary.models import CloudinaryField
 
 class User(AbstractUser):
-    pass
+    avatar=CloudinaryField(null=True)
 
 
 class BaseModel(models.Model):
@@ -30,21 +30,23 @@ class Category(BaseModel):
 class Course(BaseModel):
     subject = models.CharField(max_length=255)
     description = models.TextField()
-    image = models.ImageField(upload_to='courses/%Y/%m/')
+    image = CloudinaryField()
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
 
     def __str__(self):
         return self.subject
 
     class Meta:
-        ordering =['-id']
+        ordering = ['-id']
+
 
 class Lesson(BaseModel):
     subject = models.CharField(max_length=255)
     content = RichTextField()
-    image = models.ImageField(upload_to='lessons/%Y/%m/')
+    image = CloudinaryField()
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    tags=models.ManyToManyField('Tag')
+    tags = models.ManyToManyField('Tag')
+
     class Meta:
         unique_together = ('subject', 'course')
 
@@ -60,11 +62,11 @@ class Tag(BaseModel):
 
 
 class Interaction(BaseModel):
-    lesson= models.ForeignKey(Lesson,on_delete=models.CASCADE)
-    user= models.ForeignKey(User,on_delete=models.CASCADE)
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
-        abstract=True
+        abstract = True
 
 
 class Comment(Interaction):
@@ -72,6 +74,8 @@ class Comment(Interaction):
 
     def __str__(self):
         return self.content
+
+
 class Like(Interaction):
     class Meta:
-        unique_together= ('user','lesson')
+        unique_together = ('user', 'lesson')
