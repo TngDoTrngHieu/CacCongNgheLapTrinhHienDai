@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 
 from django.conf.global_settings import AUTH_USER_MODEL
+from oauthlib.oauth2 import Client
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -44,17 +45,24 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
     'rest_framework',
     'drf_yasg',
+    'oauth2_provider',
 ]
+OAUTH2_PROVIDER = { 'OAUTH2_BACKEND_CLASS': 'oauth2_provider.oauth2_backends.JSONOAuthLibCore' }
 
+REST_FRAMEWORK = {
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+    'oauth2_provider.contrib.rest_framework.OAuth2Authentication',)
+}
 import cloudinary
 import cloudinary.uploader
 from cloudinary.utils import cloudinary_url
 
 # Configuration
 cloudinary.config(
-    cloud_name = "dyuhodi7a",
-    api_key = "978999139367929",
-    api_secret = "fTz0B2j9mGC2dlj3aAzHCo3sO08", # Click 'View API Keys' above to copy your API secret
+    cloud_name="dyuhodi7a",
+    api_key="978999139367929",
+    api_secret="fTz0B2j9mGC2dlj3aAzHCo3sO08",  # Click 'View API Keys' above to copy your API secret
     secure=True
 )
 
@@ -98,7 +106,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'coursedb',
         'USER': 'root',
-        'PASSWORD': 'hieu',
+        'PASSWORD': 'root',
         'HOST': ''  # mặc định localhost
     }
 }
@@ -146,3 +154,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CLIENT_ID='Ms1tfaV7V5BUh2dLu22gjCwBTTQRQne9UQL8tQ21'
+CLIENT_SECRET='TKqwcpueNcSJqoIZdPXxtoJ7yYfWYMzQ5RWrrgmrequFFRxrv93aW2qHW2tVHBVdkKBchLrS5D3Y5H2rbEClzBNL5NqGluSU0s5LsL08JoHQ6STnqtAD66IBTGPw8nhG'
